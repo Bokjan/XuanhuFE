@@ -29,8 +29,9 @@ class Header extends PureComponent {
     });
   }
 
-  onSearchClick() {
-    Feedback.toast.success('not implemented yet');
+  onSearchClick(o) {
+    let keyword = o.key;
+    window.location.replace("/#/search/" + keyword);
   }
 
   render() {
@@ -94,6 +95,7 @@ class Header extends PureComponent {
           {/* Header 右侧内容块 */}
 
           <Search
+          id="searchInput"
           size="large"
           inputWidth={200}
           placeholder="搜索你感兴趣的课程"

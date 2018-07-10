@@ -140,7 +140,7 @@ export default class EditUserInfo extends Component {
                                         <IceFormBinder name="avatar" message="必填">
                                             <ImageUpload
                                                 listType="picture-card"
-                                                action=""
+                                                action={"/api/users/" + this.state.userInfo.id + "/upload"}
                                                 accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
                                                 locale={{
                                                     image: {

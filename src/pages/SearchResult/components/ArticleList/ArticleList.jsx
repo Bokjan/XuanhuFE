@@ -6,9 +6,6 @@ import CourseDetail from '../../../CourseDetail/CourseDetail';
 import axios from 'axios';
 import ud from '../../../../utilities/UrlDictionary';
 
-import IceTitle from '@icedesign/title';
-import IceIcon from '@icedesign/icon';
-
 export default class ArticleList extends Component {
   static displayName = 'ArticleList';
 
@@ -16,81 +13,72 @@ export default class ArticleList extends Component {
     super(props);
     this.state = {
       listVisible: true,
-      comments: [{
-          course: {
-            id: 1,
-            title: "软件综合开发实训"
-          },
-          user: {
-            name: "林连南"
-          },
-          content:
-            '冯玉翔：博士，讲师。研究方向：网络信息安全、物联网、移动计算。教学科研情况：先后承担了本科多门课程的教学工作，并完成了与微软、苹果公司合作的精品课程建设。先后主持三项省级科研项目，发表多篇科研论文。',
-          voteUp: 66666,
-          voteDown: 66666,
-        }, {
-          course: {
-            id: 1,
-            title: "软件需求分析、设计与建模"
-          },
-          user: {
-            name: "林连北"
-          },
-          content:
-            '林连南，中科院软件与理论专业博士，讲师。研究方向：软件工程与智能人机交互技术。个人荣誉：多次获得省级、国家级软件比赛一等奖；授课主讲软件需求分析、设计与建模，软件体系结构，智能人机交互技术；指导核心软件工程实践课程；项目：主持科研、教研、企业和政府项目近15项；指导学生研究项目，国家级学生创新创业项目近20项。',
-          voteUp: 233,
-          voteDown: 114514,
-        }, {
-          course: {
-            id: 1,
-            title: "数据库系统"
-          },
-          user: {
-            name: "林连东"
-          },
-          content:
-            '曾兵，博士，讲师。研究方向：密码学协议，特别是安全多方计算和秘密共享两个子领域。致力于为云计算、大数据、区块链等现实应用构造可证明安全的、高效的、实用的密码学协议。主要业绩：在国际学术期刊上发表SCI论文多篇，其中CCF A类1篇，B类1篇；正在主持或者已经完成5个省市校各级科研项目。',
-          voteUp: 233,
-          voteDown: 114514,
-        }]
+      results: [
+        {
+            "id": 2,
+            "title": "大学美育",
+            "teachers": [],
+            "course_type": "人文科学核心",
+            "department": "新闻与传播学院"
+        },
+        {
+            "id": 9,
+            "title": "大学语文",
+            "teachers": [],
+            "course_type": "人文科学核心",
+            "department": "新闻与传播学院"
+        }
+      ]
     };
   }
 
   componentDidMount() {
-    // axios.get(ud.getInstance().api("latestComments")).then(response => {
-    //   const {data} = response;
-    //   this.setState({
-    //     comments: data,
-    //     listVisible: true
-    //   });
-    // }).catch(e => {
-    //   Feedback.toast.error("服务器错误，请稍后刷新。");
-    // });
+    
   }
 
   render() {
     return (
-      <Loading style={{display: 'block'}} visible={!this.state.listVisible} shape="dot-circle">
+      <Loading style={{display: "block"}} visible={!this.state.listVisible} shape="dot-circle">
       <div className="article-list">
-        {/* <IceContainer>
-          <span>这是 xx 的搜索结果：</span>
-        </IceContainer> */}
-        <IceTitle>
-          搜索结果 <Icon type="lights" />
-          </IceTitle>
         <IceContainer>
-          {this.state.comments.map((item, index) => {
+          {this.props.results.map((item, index) => {
             return (
               <div key={index} style={styles.articleItem}>
                 <div>
-                  <Link style={styles.title} to={"/course/"+item.course.id}>{item.course.title + " - " + item.user.name}</Link>
-                  <Route path="/course/:courseId" component={CourseDetail}/>
+                  <Link style={styles.title} to={"/course/"+item.id}>{item.title}</Link>
                 </div>
                 <div>
-                  <p style={styles.desc}>{item.content}</p>
+                  <p style={styles.desc}></p>
                 </div>
-                {/* <div style={styles.articleItemFooter}>
-                </div> */}
+                <div style={styles.articleItemFooter}>
+                  <div style={styles.articleItemTags}>
+                    <span
+                      key="-2"
+                      className="article-item-tag"
+                      style={styles.tag}
+                    >
+                      {item.course_type}
+                    </span>
+                    <span
+                      key="-1"
+                      className="article-item-tag"
+                      style={styles.tag}
+                    >
+                      {item.department}
+                    </span>
+                    {item.teachers.map((teacher, idx) => {
+                      return (
+                        <span
+                          key={idx}
+                          className="article-item-tag"
+                          style={styles.tag}
+                        >
+                          教师姓名
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             );
           })}
