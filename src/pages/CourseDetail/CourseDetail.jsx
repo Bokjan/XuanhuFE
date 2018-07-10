@@ -35,7 +35,8 @@ export default class CourseDetail extends Component {
         intro: '林连南，中科院软件与理论专业博士，讲师。研究方向：软件工程与智能人机交互技术。个人荣誉：多次获得省级、国家级软件比赛一等奖；授课主讲软件需求分析、设计与建模，软件体系结构，智能人机交互技术；指导核心软件工程实践课程；项目：主持科研、教研、企业和政府项目近15项；指导学生研究项目，国家级学生创新创业项目近20项。'
       },
       courseInfoVisible: false,
-      generalEditorButtonLoading: false
+      generalEditorButtonLoading: false,
+      lastCourseId: this.getCourseId()
     };
   }
 
@@ -103,6 +104,15 @@ export default class CourseDetail extends Component {
     }).catch(e => {
       Feedback.toast.error("评论加载失败，请重试！");
     });
+  }
+
+  componentDidUpdate() {
+    if(this.state.lastCourseId != this.getCourseId()) {
+      this.setState({
+        lastCourseId: this.getCourseId()
+      });
+      this.componentDidMount();
+    }
   }
 
   courseInfo() {

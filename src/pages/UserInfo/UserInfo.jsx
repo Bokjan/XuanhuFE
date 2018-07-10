@@ -29,13 +29,13 @@ export default class UserInfo extends Component {
       upperVisible: false,
       commentList: [],
       upvoteList: [],
-      downvoteList: []
+      downvoteList: [],
+      lastUserId: this.getUserId()
     };
   }
 
   getUserId() {
     let arr = window.location.hash.split("/");
-
     if (arr[1] == "user") {
       return arr[2];
     } else {
@@ -107,6 +107,15 @@ export default class UserInfo extends Component {
   componentDidMount() {
     this.loadInfo();
     this.onCommentListClick();
+  }
+
+  componentDidUpdate() {
+    if(this.state.lastUserId != this.getUserId()) {
+      this.setState({
+        lastUserId: this.getUserId()
+      });
+      this.componentDidMount();
+    }
   }
 
   render() {

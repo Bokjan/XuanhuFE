@@ -54,7 +54,7 @@ const routerConfig = [
     component: EditUserInfo,
   },
   {
-    path:'/searchresult',
+    path:'/search/:keyword',
     layout:HeaderFooterLayout,
     component: SearchResult,
   },
