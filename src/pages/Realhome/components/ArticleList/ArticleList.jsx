@@ -5,6 +5,7 @@ import { Link, Router, Route } from 'react-router-dom';
 import CourseDetail from '../../../CourseDetail/CourseDetail';
 import axios from 'axios';
 import ud from '../../../../utilities/UrlDictionary';
+import ReactMarkdown from 'react-markdown';
 
 export default class ArticleList extends Component {
   static displayName = 'ArticleList';
@@ -95,7 +96,7 @@ export default class ArticleList extends Component {
                   <Route path="/course/:courseId" component={CourseDetail}/>
                 </div>
                 <div>
-                  <p style={styles.desc}>{item.content}</p>
+                <ReactMarkdown source={item.content} />
                 </div>
                 <div style={styles.articleItemFooter}>
                   {/* <div style={styles.articleItemTags}>

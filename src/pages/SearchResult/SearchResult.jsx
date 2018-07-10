@@ -25,7 +25,10 @@ export default class SearchResult extends Component {
   }
 
   componentDidMount() {
-    let keyword = this.state.lastKeyword;
+    let keyword = this.getSearchKeyword();
+    this.setState({
+      lastKeyword: keyword
+    });
     let url = ud.getInstance().api("search");
     axios.post(url, {
       keyword: keyword
@@ -34,7 +37,6 @@ export default class SearchResult extends Component {
       this.setState({
         results: data
       });
-      console.log(data);
     }).catch(e => {
       Feedback.toast.error("搜索失败");
     });
@@ -42,9 +44,6 @@ export default class SearchResult extends Component {
 
   componentDidUpdate() {
     if(this.state.lastKeyword != this.getSearchKeyword()) {
-      this.setState({
-        lastKeyword: this.getSearchKeyword()
-      });
       this.componentDidMount();
     }
   }

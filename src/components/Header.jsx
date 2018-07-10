@@ -17,9 +17,19 @@ import ud from '../utilities/UrlDictionary'
 import {withRouter} from 'react-router-dom';
 
 class Header extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchDataSource: []
+    };
+  }
+
+  componentDidMount() {
+
+  }
+
   onLogoutClick() {
     axios.post(ud.getInstance().api("logout")).then((response) => {
-      console.log(response);
       if (response.data.success) {
         localStorage.removeItem('user_info');
         localStorage.removeItem('expire_date');
@@ -32,6 +42,31 @@ class Header extends PureComponent {
   onSearchClick(o) {
     let keyword = o.key;
     window.location.replace("/#/search/" + keyword);
+  }
+
+  onSearchChange() {
+    let keyword = document.getElementById("focus-searchInput").value;
+    let url = ud.getInstance().api("search");
+    axios.post(url, {
+      keyword: keyword
+    }).then(r => {
+      const {data} = r;
+      var ds = [];
+      data.forEach(i => {
+        ds.push({
+          label: i.title,
+          value: i.title,
+          disabled: false
+        });
+      });
+      console.log(ds);
+      this.setState({
+        searchDataSource: ds
+      });
+      console.log(data);
+    }).catch(e => {
+      
+    });
   }
 
   render() {
@@ -94,7 +129,7 @@ class Header extends PureComponent {
 
           {/* Header 右侧内容块 */}
 
-          <Search
+        <Search
           id="searchInput"
           size="large"
           inputWidth={200}
@@ -104,6 +139,17 @@ class Header extends PureComponent {
             padding: 4
           }}
           onSearch={this.onSearchClick}
+          // onChange={this.onSearchChange}
+          // dataSource={this.state.searchDataSource}
+          dataSource={[{
+            label: "休闲与人生",
+            value: "休闲与人生",
+            disabled: false
+          }, {
+            label: "休闲思想史",
+            value: "休闲思想史",
+            disabled: false
+          }]}
         />
         {(userInfo != null)?
         (
