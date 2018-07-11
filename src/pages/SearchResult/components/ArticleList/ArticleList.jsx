@@ -58,7 +58,7 @@ export default class ArticleList extends Component {
                           className="article-item-tag"
                           style={styles.tag}
                         >
-                          教师姓名
+                          {teacher}
                         </span>
                       );
                     })}

@@ -11,25 +11,17 @@ import './EditUserInfo.scss';
 
 const { Row, Col } = Grid;
 const { Group: RadioGroup } = Radio;
-const { ImageUpload } = Upload;
+const { ImageUpload, CropUpload } = Upload;
 
 import ud from "../../utilities/UrlDictionary";
 import axios from "axios";
 
-function beforeUpload(info) {
-    console.log('beforeUpload callback : ', info);
-}
-
-function onChange(info) {
-    console.log('onChane callback : ', info);
-}
-
 function onSuccess(res, file) {
-    console.log('onSuccess callback : ', res, file);
-}
-
-function onError(file) {
-    console.log('onError callback : ', file);
+    var info = JSON.parse(window.localStorage.getItem("user_info"));
+    info.avatar_url = res.url;
+    window.localStorage.setItem("user_info", JSON.stringify(info));
+    Feedback.toast.success("头像设置成功！");
+    setTimeout(() => { document.location.reload(); }, 800);
 }
 
 export default class EditUserInfo extends Component {
@@ -91,14 +83,6 @@ export default class EditUserInfo extends Component {
         });
     }
 
-    onDragOver = () => {
-        // console.log('dragover callback');
-    };
-
-    onDrop = (fileList) => {
-        console.log('drop callback : ', fileList);
-    };
-
     formChange = (value) => {
         // console.log('value', value);
         this.setState({
@@ -137,24 +121,24 @@ export default class EditUserInfo extends Component {
                                         头像&nbsp;
                                     </Col>
                                     <Col s="12" l="10">
-                                        <IceFormBinder name="avatar" message="必填">
-                                            <ImageUpload
-                                                listType="picture-card"
+                                        <IceFormBinder name="avatar">
+                                            <CropUpload
                                                 action={"/api/users/" + this.state.userInfo.id + "/upload"}
-                                                accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
-                                                locale={{
-                                                    image: {
-                                                        cancel: '取消上传',
-                                                        addPhoto: '上传图片',
-                                                    },
-                                                }}
-                                                beforeUpload={beforeUpload}
-                                                onChange={onChange}
+                                                preview
+                                                previewList={[80, 60, 40]}
+                                                minCropBoxSize={100}
+                                                // beforeCrop={this.beforeCrop}
+                                                // onCrop={this.onCrop}
+                                                // beforeUpload={this.beforeUpload}
+                                                // onChange={this.onChange}
                                                 onSuccess={onSuccess}
-                                                onError={onError}
-                                            />
+                                            >
+                                                <Button type="primary" style={{ margin: 0 }}>
+                                                上传头像
+                                                </Button>
+                                                {/* trigger end */}
+                                            </CropUpload>
                                         </IceFormBinder>
-                                        <IceFormError name="avatar" />
                                     </Col>
                                 </Row>
 

@@ -31,9 +31,10 @@ class Header extends PureComponent {
     axios.get(url).then(r => {
       const {data} = r;
       data.forEach(i => {
+        let title = i.split("（")[0]; // 截掉括号内容，以免横向距离过大
         ds.push({
-          label: i,
-          value: i,
+          label: title,
+          value: title,
           disabled: false
         });
         this.setState({
@@ -56,6 +57,9 @@ class Header extends PureComponent {
 
   onSearchClick(o) {
     let keyword = o.key;
+    if (keyword == "") {
+      return;
+    }
     window.location.replace("/#/search/" + keyword);
   }
 
@@ -154,7 +158,6 @@ class Header extends PureComponent {
             padding: 4
           }}
           onSearch={this.onSearchClick}
-          // onChange={this.onSearchChange}
           dataSource={this.state.searchDataSource}
         />
         {(userInfo != null)?
