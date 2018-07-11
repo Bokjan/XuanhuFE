@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ArticleList from './components/ArticleList';
-import { Grid, Icon } from "@icedesign/base";
+import { Grid, Icon, Button, Dialog, Feedback } from "@icedesign/base";
 const { Row, Col } = Grid;
 
 import ud from "../../utilities/UrlDictionary";
@@ -16,7 +16,8 @@ export default class SearchResult extends Component {
     super(props);
     this.state = {
       results: [],
-      lastKeyword: this.getSearchKeyword()
+      lastKeyword: this.getSearchKeyword(),
+      feedbackDialogVisible: false
     };
   }
 
@@ -37,6 +38,11 @@ export default class SearchResult extends Component {
       this.setState({
         results: data
       });
+      if(data.length == 0) {
+        this.setState({
+          feedbackDialogVisible: true
+        });
+      }
     }).catch(e => {
       Feedback.toast.error("搜索失败");
     });
@@ -48,6 +54,28 @@ export default class SearchResult extends Component {
     }
   }
 
+  onFeedbackConfirmButtonClick() {
+    setTimeout(() => { Feedback.toast.success("报告成功！") }, 500); // 500ms 后显示 toast
+  }
+
+  generateFeedbackDialog() {
+    const footer = (
+      <Button type="primary" onClick={this.onFeedbackConfirmButtonClick.bind(this)}>确定</Button>
+    );
+    return (
+      <Dialog
+        title="Oops..."
+        animation={{ in: 'fadeInDown', out: 'fadeOutUp' }}
+        onCancel={()=>{this.setState({feedbackDialogVisible: false});}}
+        onOk={()=>{this.onFeedbackConfirmButtonClick();this.setState({feedbackDialogVisible: false});}}
+        visible={this.state.feedbackDialogVisible}
+      >
+        <p>看起来没有相关的搜索结果……</p>
+        <p>要将这个不成功的搜索上报给管理员吗？</p>
+      </Dialog>
+    );
+  }
+
   render() {
     return (
       <div className="SearchResult-page">
@@ -55,12 +83,13 @@ export default class SearchResult extends Component {
         <Col span="3"/>
         <Col span="18">
           <IceTitle>
-            搜索结果 - “{this.state.lastKeyword}” <Icon type="lights" />
+          「{this.state.lastKeyword}」搜索结果<Icon type="lights" />
           </IceTitle>
           <ArticleList results={this.state.results} />
         </Col>
         <Col span="3"/>
       </Row>
+      {this.generateFeedbackDialog()}
       </div>
     );
   }

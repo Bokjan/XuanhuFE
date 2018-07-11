@@ -13,22 +13,7 @@ export default class ArticleList extends Component {
     super(props);
     this.state = {
       listVisible: true,
-      results: [
-        {
-            "id": 2,
-            "title": "大学美育",
-            "teachers": [],
-            "course_type": "人文科学核心",
-            "department": "新闻与传播学院"
-        },
-        {
-            "id": 9,
-            "title": "大学语文",
-            "teachers": [],
-            "course_type": "人文科学核心",
-            "department": "新闻与传播学院"
-        }
-      ]
+      results: []
     };
   }
 
@@ -48,7 +33,7 @@ export default class ArticleList extends Component {
                   <Link style={styles.title} to={"/course/"+item.id}>{item.title}</Link>
                 </div>
                 <div>
-                  <p style={styles.desc}></p>
+                  <p style={styles.desc}>{item.intro}</p>
                 </div>
                 <div style={styles.articleItemFooter}>
                   <div style={styles.articleItemTags}>

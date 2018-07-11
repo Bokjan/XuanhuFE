@@ -25,7 +25,22 @@ class Header extends PureComponent {
   }
 
   componentDidMount() {
-
+    // 预载入课程列表供搜索框使用
+    var ds = [];
+    let url = ud.getInstance().api("courses");
+    axios.get(url).then(r => {
+      const {data} = r;
+      data.forEach(i => {
+        ds.push({
+          label: i,
+          value: i,
+          disabled: false
+        });
+        this.setState({
+          searchDataSource: ds
+        });
+      });
+    }).catch(e => {});
   }
 
   onLogoutClick() {
@@ -140,16 +155,7 @@ class Header extends PureComponent {
           }}
           onSearch={this.onSearchClick}
           // onChange={this.onSearchChange}
-          // dataSource={this.state.searchDataSource}
-          dataSource={[{
-            label: "休闲与人生",
-            value: "休闲与人生",
-            disabled: false
-          }, {
-            label: "休闲思想史",
-            value: "休闲思想史",
-            disabled: false
-          }]}
+          dataSource={this.state.searchDataSource}
         />
         {(userInfo != null)?
         (

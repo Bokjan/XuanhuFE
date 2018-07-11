@@ -19,6 +19,7 @@ export default class UrlDictionary {
         this.map.set('register', 'reg');
         this.map.set('latestComments', 'latest');
         this.map.set('search', 'search');
+        this.map.set('courses', 'courses');
     }
     get(k) {
         return this.map.get(k);
