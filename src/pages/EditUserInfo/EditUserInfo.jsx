@@ -73,6 +73,10 @@ export default class EditUserInfo extends Component {
         if(document.getElementById("formDescription").value.length != 0) {
             data.description = document.getElementById("formDescription").value;
         }
+        if(document.getElementById("formNewPassword").value.length != 0) {
+            data.old_password = document.getElementById("formOldPassword").value;
+            data.password = document.getElementById("formNewPassword").value;
+        }
         axios.put(url, data).then(response => {
             const {data} = response;
             window.localStorage.setItem("user_info", JSON.stringify(data));
@@ -109,10 +113,9 @@ export default class EditUserInfo extends Component {
                                         用户名&nbsp;
                                     </Col>
                                     <Col s="12" l="10">
-                                        <IceFormBinder name="name" required max={10} message="必填">
+                                        <IceFormBinder name="name" max={10}>
                                             <Input id="formName" size="large" placeholder="不更改请留空" />
                                         </IceFormBinder>
-                                        <IceFormError name="name" />
                                     </Col>
                                 </Row>
 
@@ -127,10 +130,6 @@ export default class EditUserInfo extends Component {
                                                 preview
                                                 previewList={[80, 60, 40]}
                                                 minCropBoxSize={100}
-                                                // beforeCrop={this.beforeCrop}
-                                                // onCrop={this.onCrop}
-                                                // beforeUpload={this.beforeUpload}
-                                                // onChange={this.onChange}
                                                 onSuccess={onSuccess}
                                             >
                                                 <Button type="primary" style={{ margin: 0 }}>
@@ -138,6 +137,28 @@ export default class EditUserInfo extends Component {
                                                 </Button>
                                                 {/* trigger end */}
                                             </CropUpload>
+                                        </IceFormBinder>
+                                    </Col>
+                                </Row>
+
+                                <Row style={styles.formItem}>
+                                    <Col xxs="6" s="3" l="3" style={styles.label}>
+                                        原密码&nbsp;
+                                    </Col>
+                                    <Col s="12" l="10">
+                                        <IceFormBinder name="old_password" max={16}>
+                                            <Input id="formOldPassword" size="large" placeholder="修改密码请先验证原密码" htmlType="password" />
+                                        </IceFormBinder>
+                                    </Col>
+                                </Row>
+
+                                <Row style={styles.formItem}>
+                                    <Col xxs="6" s="3" l="3" style={styles.label}>
+                                        新密码&nbsp;
+                                    </Col>
+                                    <Col s="12" l="10">
+                                        <IceFormBinder name="password" max={16}>
+                                            <Input id="formNewPassword" size="large" placeholder="不更改请留空" htmlType="password" />
                                         </IceFormBinder>
                                     </Col>
                                 </Row>

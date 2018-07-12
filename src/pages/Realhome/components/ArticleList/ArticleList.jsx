@@ -20,7 +20,8 @@ export default class ArticleList extends Component {
   }
 
   loadMoreComments() {
-    axios.get(ud.getInstance().api("latestComments") + "?page=" + (this.state.currentPage + 1)).then(response => {
+    let page = this.state.currentPage + 1;
+    axios.get(ud.getInstance().api("latestComments") + "?page=" + page).then(response => {
       const {data} = response;
       if(data.length == 0) {
         Feedback.toast.success("已经到底啦~");
@@ -28,7 +29,7 @@ export default class ArticleList extends Component {
       this.setState({
         comments: this.state.comments.concat(data),
         listVisible: true,
-        currentPage: this.state.currentPage + 1
+        currentPage: page
       });
     }).catch(e => {
       Feedback.toast.error("服务器错误，请稍后刷新。");
@@ -52,7 +53,6 @@ export default class ArticleList extends Component {
               <div key={index} style={styles.articleItem}>
                 <div>
                   <Link style={styles.title} to={"/course/"+item.course.id}>{item.course.title + " - " + item.user.name}</Link>
-                  <Route path="/course/:courseId" component={CourseDetail}/>
                 </div>
                 <div>
                 <ReactMarkdown source={item.content} />
